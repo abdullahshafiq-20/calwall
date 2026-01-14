@@ -6,7 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Copy, Check, Download, RefreshCw } from "lucide-react";
 
-const SERVER_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:3000';
+
+const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
 
 export default function App() {
   const canvasRef = useRef(null);
