@@ -68,6 +68,19 @@ export const getWallpaperImage = async (req, res) => {
         // Calculate days with timezone adjustment
         const now = new Date();
         const localTime = new Date(now.getTime() + (timezoneOffset * 60 * 60 * 1000));
+        console.log(`[DEBUG] User Local Time: ${localTime.toISOString()}`);
+
+        // Log "Time left to change the dot" and "Current Date"
+        const currentDotDate = localTime.toISOString().split('T')[0];
+        const h = localTime.getUTCHours();
+        const m = localTime.getUTCMinutes();
+        const s = localTime.getUTCSeconds();
+        const timeLeftStr = `${23 - h}h ${59 - m}m ${59 - s}s`;
+
+        console.log(`--- DOT STATUS ---`);
+        console.log(`Current Dot Date: ${currentDotDate}`);
+        console.log(`Time left to change dot: ${timeLeftStr}`);
+        console.log(`------------------`);
 
         let totalDays, daysPassed, title;
 
@@ -83,7 +96,9 @@ export const getWallpaperImage = async (req, res) => {
             totalDays = isLeapYear ? 366 : 365;
 
             const startOfYear = new Date(localTime.getFullYear(), 0, 1);
-            daysPassed = Math.ceil((localTime - startOfYear) / (1000 * 60 * 60 * 24)) + 1;
+            // Use Math.floor + 1 to properly calculate 1-indexed day number
+            // (e.g., 0.5 days passed -> floor(0.5) = 0 -> +1 = Day 1)
+            daysPassed = Math.floor((localTime - startOfYear) / (1000 * 60 * 60 * 24)) + 1;
             title = `Year ${localTime.getFullYear()}`;
         }
 
